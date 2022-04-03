@@ -3,9 +3,15 @@ import os
 
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+from fastapi.responses import HTMLResponse
 
 app = FastAPI()
 security = HTTPBasic()
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+templates = Jinja2Templates(directory="templates")
 
 
 def get_current_username(credentials: HTTPBasicCredentials = Depends(security)):
@@ -25,3 +31,8 @@ def get_current_username(credentials: HTTPBasicCredentials = Depends(security)):
 @app.get("/")
 async def root(username: str = Depends(get_current_username)):
     return {"message": f'Hello, {username}'}
+
+
+@app.get("/about", response_class=HTMLResponse)
+async def about(username: str = Depends(get_current_username)):
+    return templates.TemplateResponse("test.html", {"user": username})
