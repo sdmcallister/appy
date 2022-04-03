@@ -1,7 +1,7 @@
 import secrets
 import os
 
-from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi import FastAPI, Depends, HTTPException, status, Request
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -34,5 +34,5 @@ async def root(username: str = Depends(get_current_username)):
 
 
 @app.get("/about", response_class=HTMLResponse)
-async def about(username: str = Depends(get_current_username)):
-    return templates.TemplateResponse("test.html", {"user": username})
+async def about(request: Request, username: str = Depends(get_current_username)):
+    return templates.TemplateResponse("test.html", {"request": request, "user": username})
