@@ -7,6 +7,9 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 
+import extracker
+print(extracker.d)
+
 app = FastAPI()
 security = HTTPBasic()
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -36,3 +39,8 @@ async def root(username: str = Depends(get_current_username)):
 @app.get("/about", response_class=HTMLResponse)
 async def about(request: Request, username: str = Depends(get_current_username)):
     return templates.TemplateResponse("test.html", {"request": request, "user": username})
+
+
+@app.get("/exercise", response_class=HTMLResponse)
+async def about(request: Request, username: str = Depends(get_current_username)):
+    return templates.TemplateResponse("ex.html", {"request": request, "user": username, "exercises": extracker.d})
