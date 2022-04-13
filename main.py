@@ -1,5 +1,6 @@
 import secrets
 import os
+from datetime import date
 
 from fastapi import FastAPI, Depends, HTTPException, status, Request
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
@@ -8,7 +9,6 @@ from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 
 import extracker
-print(extracker.d)
 
 app = FastAPI()
 security = HTTPBasic()
@@ -43,4 +43,5 @@ async def about(request: Request, username: str = Depends(get_current_username))
 
 @app.get("/exercise", response_class=HTMLResponse)
 async def about(request: Request, username: str = Depends(get_current_username)):
-    return templates.TemplateResponse("ex.html", {"request": request, "user": username, "exercises": extracker.d})
+    today = date.today().strftime("%Y-%m-%d")
+    return templates.TemplateResponse("ex.html", {"request": request, "user": username, "exercises": extracker.d[today]})

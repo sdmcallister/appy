@@ -11,13 +11,11 @@
 </head>
 
 <body>
-  <p class="text-3xl font-bold">Simple Exercise List</p>
-  {% for key, value in exercises.items() %}
-  {% for item in value %}
+  <p class="text-3xl font-bold">Today's Exercise</p>
+  {% for item in exercises %}
   <p>{{ item }}</p>
   {% endfor %}
   <br>
-  {% endfor %}
 </body>
 
 </html>
